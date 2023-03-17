@@ -19,7 +19,7 @@ SharedFields:
   Value: Settings Route
 - ID: "30e0a829-637e-478c-a136-66adb568398d"
   Hint: GraphQLEndpoint
-  Value: /sitecore/api/graph/edge
+  Value: https://edge.sitecorecloud.io/api/graphql/v1
 - ID: "32ce6bbe-4217-46e5-9335-42793884cbe3"
   Hint: AppTemplate
   Value: "{507B2363-3200-4CEA-B238-3045731BA6A5}"

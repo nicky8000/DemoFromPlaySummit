@@ -1,41 +1,22 @@
 import { faChevronDown, faSearch, faSlidersH, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  SearchResponseFacetItem,
-  SearchResponseFacets,
-  SearchResponseSortChoice,
-  useSearchResults,
-  useSearchResultsIsSelectedFacet,
-  // useSearchResultsSelectedFacets,
-} from '@sitecore-discover/react';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 type FacetValueProps = {
-  facetType: unknown;
-  facetId: number;
-  text: string;
-  facetValueIndex: number;
-  valueIndex: number;
-  facetIndex: number;
-  count: number;
-  onFacetClick: (...args: unknown[]) => void;
-};
-
-type FacetValuesProps = {
   values: unknown[];
-  tindex: number;
+  tindex: unknown;
   acumIndex: number;
   facetType: unknown;
   onFacetClick: (...args: unknown[]) => void;
 };
 
-type ActiveFacetValueProps = FacetValuesProps & {
+type ActiveFacetValueProps = FacetValueProps & {
   name: unknown;
 };
 
 type FacetProps = {
-  name: string;
-  values: SearchResponseFacetItem[];
+  name: unknown;
+  values: unknown[];
   index: number;
   acumIndex: number;
   type: unknown;
@@ -44,72 +25,28 @@ type FacetProps = {
 
 type SearchInputProps = {
   onSearchInputChange: (...args: unknown[]) => void;
-  keyphrase?: string;
 };
 
 type FacetListProps = {
-  list: string[];
-  facets: SearchResponseFacets;
+  facets: unknown[];
+  onFacetClick: (...args: unknown[]) => void;
+  onClear: (...args: unknown[]) => void;
   sortFacetProps: SortFacetProps;
   onToggleClick: (...args: unknown[]) => void;
   isCategoryProductListingPage?: boolean;
   onSearchInputChange?: (...args: unknown[]) => void;
-  keyphrase?: string;
 };
 
 type SortFacetProps = {
-  sortChoices: SearchResponseSortChoice[];
-  sortType: string;
-  sortDirection: string;
+  sortChoices: unknown[];
+  sortType: unknown;
+  sortDirection: unknown;
   onSortChange: (change: SortChangeRequest) => void;
 };
 
 type SortChangeRequest = {
-  sortType: string;
-  sortDirection: string;
-};
-
-const FacetValue = ({
-  facetType,
-  facetId,
-  text,
-  facetValueIndex,
-  valueIndex,
-  facetIndex,
-  count,
-  onFacetClick,
-}: FacetValueProps) => {
-  const selected = useSearchResultsIsSelectedFacet(facetType, facetId);
-  const [toggle, setToggle] = useState(selected || false);
-  useEffect(() => {
-    setToggle(selected);
-  }, [selected]);
-  return (
-    <li key={text} data-index={valueIndex} data-text={text} data-level="0">
-      <div>
-        <input
-          type="checkbox"
-          checked={toggle}
-          onChange={({ target }) => {
-            setToggle(target.checked);
-            onFacetClick({
-              facetId: facetType,
-              facetValueId: facetId,
-              facetValue: text,
-              facetValueIndex,
-              valueIndex,
-              facetIndex,
-              checked: target.checked,
-            });
-          }}
-        />
-        <label title={`${text} (${count})`}>
-          {text}
-          <span>({count})</span>
-        </label>
-      </div>
-    </li>
-  );
+  sortType: unknown;
+  sortDirection: unknown;
 };
 
 const FacetValues = ({
@@ -118,21 +55,38 @@ const FacetValues = ({
   acumIndex,
   facetType,
   onFacetClick,
-}: FacetValuesProps): JSX.Element => (
+}: FacetValueProps): JSX.Element => (
   <ul className="facet-values">
-    {values.map(({ index: facetValueIndex, id: facetId, text, count }, index) => {
+    {values.map(({ index: facetValueIndex, text, selected, id }, index) => {
+      const handleValueClick = ({ target }: ChangeEvent<HTMLInputElement>) => {
+        onFacetClick({
+          facetType,
+          facetValue: text,
+          facetValueIndex,
+          valueIndex: acumIndex + index,
+          facetIndex: tindex,
+          checked: (target as HTMLInputElement).checked,
+        });
+      };
+
       return (
-        <FacetValue
-          key={text}
-          text={text}
-          facetType={facetType}
-          facetIndex={tindex}
-          facetValueIndex={facetValueIndex}
-          facetId={facetId}
-          count={count}
-          valueIndex={acumIndex + index}
-          onFacetClick={onFacetClick}
-        />
+        <li
+          data-index={acumIndex + index}
+          data-type={facetType}
+          data-text={text}
+          data-level={0}
+          key={index}
+        >
+          <input
+            type="checkbox"
+            checked={selected}
+            id={id}
+            onChange={(event) => handleValueClick(event)}
+          />
+          <label htmlFor={id} title={text}>
+            {text}
+          </label>
+        </li>
       );
     })}
   </ul>
@@ -148,7 +102,7 @@ const Facet = ({ name, values, index, acumIndex, type, onFacetClick }: FacetProp
   return (
     <div className={cssClass} data-type={type}>
       <div className="facet-title" onClick={handleTitleClick}>
-        <span>{name}</span>
+        <span>{name.toString()}</span>
         <FontAwesomeIcon icon={faChevronDown} />
       </div>
       <FacetValues
@@ -275,7 +229,7 @@ const SortFacet = ({
   );
 };
 
-const SearchInput = ({ onSearchInputChange, keyphrase }: SearchInputProps): JSX.Element => (
+const SearchInput = ({ onSearchInputChange }: SearchInputProps): JSX.Element => (
   <div className="category-search-container">
     <FontAwesomeIcon className="category-search-icon" icon={faSearch} />
     <input
@@ -284,57 +238,52 @@ const SearchInput = ({ onSearchInputChange, keyphrase }: SearchInputProps): JSX.
       onChange={onSearchInputChange}
       placeholder="Search within the list"
       autoComplete="off"
-      value={keyphrase}
     />
   </div>
 );
 
 const FacetList = ({
-  list,
   facets,
+  onFacetClick,
+  onClear,
   sortFacetProps,
   onToggleClick,
   isCategoryProductListingPage,
   onSearchInputChange,
-  keyphrase,
 }: FacetListProps): JSX.Element => {
-  const {
-    context: { selectedFacets = {} },
-    actions: { onFacetClick, onClearFilters, onFilterClick },
-  } = useSearchResults();
-  // const selectedFacetsFromApi = useSearchResultsSelectedFacets();
   let acumIndex = 0;
 
-  const activeFilters = list?.some((type) => selectedFacets[type]?.length > 0) && (
+  const activeFilters = facets?.some(({ values = [] }) =>
+    values?.some(({ selected }) => selected)
+  ) && (
     <div className="facet-list-active">
       <div className="facet-list-title">
         <FontAwesomeIcon icon={faSlidersH} />
         <span>Active filters</span>
       </div>
-      {list?.map((type, tindex) => {
-        const { value: values = [], display_name } = facets[type] || {};
-        acumIndex = acumIndex + values.length;
+      {facets?.map(({ facetType, values, display_name }, tindex) => {
         const componentHtml = (
           <ActiveFacet
             name={display_name}
             index={tindex}
             acumIndex={acumIndex}
-            type={type}
+            type={facetType}
             values={values}
             key={tindex}
-            onFacetClick={onFilterClick}
+            onFacetClick={onFacetClick}
           />
         );
+        acumIndex = acumIndex + values.length;
         return componentHtml;
       })}
-      <button className="btn-secondary" onClick={onClearFilters}>
+      <button className="btn-secondary" onClick={onClear}>
         Clear All
       </button>
     </div>
   );
 
   const searchInput = isCategoryProductListingPage && (
-    <SearchInput keyphrase={keyphrase} onSearchInputChange={onSearchInputChange} />
+    <SearchInput onSearchInputChange={onSearchInputChange} />
   );
 
   // TODO: Implement and style range filters (e.g. min - max price)
@@ -348,20 +297,19 @@ const FacetList = ({
       {activeFilters}
       <div className="facet-list">
         <SortFacet {...sortFacetProps} />
-        {list?.map((type, tindex) => {
-          const { value: values = [], display_name } = facets[type] || {};
-          acumIndex = acumIndex + values.length;
+        {facets?.map(({ facetType, values, display_name }, tindex) => {
           const componentHtml = (
             <Facet
               name={display_name}
               index={tindex}
               acumIndex={acumIndex}
-              type={type}
+              type={facetType}
               values={values}
               key={tindex}
               onFacetClick={onFacetClick}
             />
           );
+          acumIndex = acumIndex + values.length;
           return componentHtml;
         })}
       </div>

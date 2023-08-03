@@ -1,5 +1,7 @@
 import {
+  init,
   setWidget,
+  setCredentials,
   WidgetDataType,
   PageController,
   trackPageViewEvent,
@@ -12,30 +14,60 @@ import SimilarProducts from '../components/Widgets/SimilarProducts';
 import RecommendedForYou from '../components/Widgets/RecommendedForYou';
 import TrendingProducts from '../components/Widgets/TrendingProducts';
 import RecentlyViewedProducts from '../components/Widgets/RecentlyViewedProducts';
-import DiscoverServiceConfig from './DiscoverServiceConfig';
+import FeaturedProducts from '../components/Widgets/FeaturedProducts';
+import GeoBasedProducts from '../components/Widgets/GeoBasedProducts';
+import { isAShopPage } from '../helpers/CommerceHelper';
 
 export interface DiscoverReference {
   current: { contains: (eventTarget: EventTarget) => boolean };
 }
 
-export const updateDiscoverContext = (): void => {
-  const context = PageController.getContext();
-  context.setPageUri(window.location.pathname);
-  trackPageViewEvent({
-    page: {
-      uri: context.getPageUri(),
-    },
-    user: {
-      uuid: context.getUserUuid(),
-    },
-  });
+type DiscoverServiceOptions = {
+  isStorybook?: boolean;
 };
 
-export const DiscoverService = (): void => {
-  const config = DiscoverServiceConfig();
-  if (typeof window === 'undefined' || !config.customerKey || !config.apiKey) {
+export const updateDiscoverContext = (): void => {
+  const pathName = window.location.pathname;
+
+  // Only update the context for shop pages
+  if (isAShopPage(pathName)) {
+    const context = PageController.getContext();
+    context.setPageUri(pathName);
+    trackPageViewEvent({
+      page: {
+        uri: context.getPageUri(),
+      },
+      user: {
+        uuid: context.getUserUuid(),
+      },
+    });
+  }
+};
+
+let isDiscoverInitialized = false;
+
+export const initialize = (options?: DiscoverServiceOptions): void => {
+  if (isDiscoverInitialized) {
     return;
   }
+
+  const DISCOVER_CUSTOMER_KEY = options?.isStorybook
+    ? '0-0'
+    : process.env.NEXT_PUBLIC_DISCOVER_CUSTOMER_KEY || '';
+  const DISCOVER_API_KEY = options?.isStorybook
+    ? '0-0-0'
+    : process.env.NEXT_PUBLIC_DISCOVER_API_KEY || '';
+
+  if (typeof window === 'undefined' || !DISCOVER_CUSTOMER_KEY || !DISCOVER_API_KEY) {
+    return;
+  }
+
+  setCredentials({
+    env: 'prod',
+    customerKey: `${DISCOVER_CUSTOMER_KEY}`,
+    apiKey: `${DISCOVER_API_KEY}`,
+    useToken: true,
+  });
 
   setWidget('rfkid_7', {
     component: FullPageSearch,
@@ -52,7 +84,7 @@ export const DiscoverService = (): void => {
     type: WidgetDataType.PREVIEW_SEARCH,
     options: {
       preRender: true,
-      props: {
+      properties: {
         initial: {
           redirectUrl: '/shop/products?q=',
           inputQuerySelector: '#search-input',
@@ -65,7 +97,7 @@ export const DiscoverService = (): void => {
     component: SimilarProducts,
     type: WidgetDataType.RECOMMENDATION,
     options: {
-      props: {
+      properties: {
         initial: {
           totalItems: 4,
         },
@@ -77,7 +109,7 @@ export const DiscoverService = (): void => {
     component: TrendingProducts,
     type: WidgetDataType.RECOMMENDATION,
     options: {
-      props: {
+      properties: {
         initial: {
           totalItems: 4,
         },
@@ -89,7 +121,7 @@ export const DiscoverService = (): void => {
     component: RecommendedForYou,
     type: WidgetDataType.RECOMMENDATION,
     options: {
-      props: {
+      properties: {
         initial: {
           totalItems: 4,
         },
@@ -101,7 +133,7 @@ export const DiscoverService = (): void => {
     component: RecentlyViewedProducts,
     type: WidgetDataType.RECOMMENDATION,
     options: {
-      props: {
+      properties: {
         initial: {
           totalItems: 4,
         },
@@ -113,7 +145,19 @@ export const DiscoverService = (): void => {
     component: CustomersAlsoBought,
     type: WidgetDataType.RECOMMENDATION,
     options: {
-      props: {
+      properties: {
+        initial: {
+          totalItems: 4,
+        },
+      },
+    },
+  });
+
+  setWidget('rfkid_36', {
+    component: FeaturedProducts,
+    type: WidgetDataType.RECOMMENDATION,
+    options: {
+      properties: {
         initial: {
           totalItems: 4,
         },
@@ -126,10 +170,26 @@ export const DiscoverService = (): void => {
     type: WidgetDataType.PREVIEW_SEARCH,
   });
 
+  setWidget('ps_geo', {
+    component: GeoBasedProducts,
+    type: WidgetDataType.RECOMMENDATION,
+    options: {
+      properties: {
+        initial: {
+          totalItems: 4,
+        },
+      },
+    },
+  });
+
+  init();
+
   // Update the context page URI on route change
   const pushState = history.pushState;
   history.pushState = (...rest) => {
     pushState.apply(history, rest);
     updateDiscoverContext();
   };
+
+  isDiscoverInitialized = true;
 };

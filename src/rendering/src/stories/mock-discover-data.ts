@@ -179,7 +179,6 @@ export const mockDiscoverData = {
     ...commonProps,
     ...previewSearchCommonProps,
     rfkId: 'ps_trending_categories',
-    redirectUrl: '/shop/products?q=',
     trendingCategories: [
       {
         url: '/shop/category/activities/hiking/equipment',

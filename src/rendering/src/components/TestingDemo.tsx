@@ -1,4 +1,10 @@
-import { Field, Image, ImageField, Text, withDatasourceCheck } from '@sitecore-jss/sitecore-jss-nextjs';
+import {
+    Field,
+    Image,
+    ImageField,
+    Text,
+    withDatasourceCheck
+} from '@sitecore-jss/sitecore-jss-nextjs';
 import { ComponentProps } from 'lib/component-props';
 
 type TestingDemoProps = ComponentProps & {
@@ -29,5 +35,5 @@ const TestingDemo = (props: TestingDemoProps): JSX.Element => {
     </div>
   )
 };
-
+;
 export const Default = withDatasourceCheck()<TestingDemoProps>(TestingDemo);

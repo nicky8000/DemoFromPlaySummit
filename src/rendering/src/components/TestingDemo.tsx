@@ -1,9 +1,9 @@
 import {
-Field,
-Image,
-ImageField,
-Text,
-withDatasourceCheck
+  Field,
+  Image,
+  ImageField,
+  Text,
+  withDatasourceCheck
 } from '@sitecore-jss/sitecore-jss-nextjs';
 import { ComponentProps } from 'lib/component-props';
 
@@ -26,14 +26,18 @@ const TestingDemo = (props: TestingDemoProps): JSX.Element => {
             </div>
             <div className="brandBlock-inner">
               <div className="brandBlock-content">
-                <Text field={props.fields.title} tag="div" className="brandBlock-title show-for-sr" />
+                <Text
+                  field={props.fields.title}
+                  tag="div"
+                  className="brandBlock-title show-for-sr"
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
-};
-;
+  );
+}
+
 export const Default = withDatasourceCheck()<TestingDemoProps>(TestingDemo);

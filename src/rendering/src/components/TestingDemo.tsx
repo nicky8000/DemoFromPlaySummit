@@ -3,7 +3,7 @@ import {
   Image,
   ImageField,
   Text,
-  withDatasourceCheck
+  withDatasourceCheck,
 } from '@sitecore-jss/sitecore-jss-nextjs';
 import { ComponentProps } from 'lib/component-props';
 
@@ -38,6 +38,6 @@ const TestingDemo = (props: TestingDemoProps): JSX.Element => {
       </div>
     </div>
   );
-}
+};
 
 export const Default = withDatasourceCheck()<TestingDemoProps>(TestingDemo);

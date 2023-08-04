@@ -28,6 +28,6 @@ const TestingDemo = (props: TestingDemoProps): JSX.Element => {
       </div>
     </div>
   )
-}
+};
 
 export const Default = withDatasourceCheck()<TestingDemoProps>(TestingDemo);

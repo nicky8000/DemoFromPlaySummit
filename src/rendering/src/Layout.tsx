@@ -9,12 +9,12 @@ import { getPublicUrl } from '@sitecore-jss/sitecore-jss-nextjs/utils';
 import Scripts from 'src/Scripts';
 // DEMO TEAM CUSTOMIZATION - CDP and Sitecore Send integration
 import { trackViewEvent } from './services/TrackingService';
-import HeaderCdpMessageBar from './components/HeaderCdpMessageBar';
+//import HeaderCdpMessageBar from './components/HeaderCdpMessageBar';
 import { isEditingOrPreviewingPage } from './helpers/LayoutServiceHelper';
 // END CUSTOMIZATION
 // DEMO TEAM CUSTOMIZATION - Sitecore Search integration
-import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from './helpers/ContentSearchHelper';
+//import { QueryClientProvider } from '@tanstack/react-query';
+//import { queryClient } from './helpers/ContentSearchHelper';
 // END CUSTOMIZATION
 
 // Prefix public assets with a public URL to enable compatibility with Sitecore Experience Editor.

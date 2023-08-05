@@ -85,11 +85,6 @@ const MainNavigation = (props: MainNavigationProps): JSX.Element => {
               </li>
             ))}
             {shopLink}
-            <li className="button-menu-item">
-              <Link href="/tickets" className="btn-main">
-                Book Tickets
-              </Link>
-            </li>
           </ul>
           <div className="search-input-container">
             <PreviewSearchContent />

@@ -97,7 +97,7 @@ const Footer = (props: FooterProps): JSX.Element => {
       <div className="footer-legal">
         <div className="footer-legal-links">
           <div>
-            <p>Copyright © 2014-{newDate.getFullYear()} PLAY! Summit</p>
+            <p>Copyright © {newDate.getFullYear()} Darling Ingredients</p>
           </div>
           <div>
             <Link href="/privacy">Privacy Policy</Link>

@@ -27,6 +27,7 @@
 @import './layout/sections.css';
 @import './layout/sxaLayout.css';
 @import './layout/text.css';
+@import './TestingDemo.css';
 
 /* Tailwindify other components and pages from rest.css here */
 @import './rest.css';

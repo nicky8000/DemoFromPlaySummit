@@ -1,0 +1,7 @@
+.testing-demo-section {
+  @apply basis-full flex items-center pt-4 pb-4 bg-black;
+
+  .testing-demo-text {
+    @apply text-white text-center;
+  }
+}

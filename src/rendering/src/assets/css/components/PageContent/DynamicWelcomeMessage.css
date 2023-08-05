@@ -1,11 +1,11 @@
 .dynamic-welcome-message {
-  @apply basis-full py-0 bg-blue-lightest;
+  @apply basis-full py-0 bg-white;
 
   .message-banner {
-    @apply py-4 text-base leading-normal text-black;
+    @apply py-4 text-base leading-normal text-[#009639] flex;
 
     span {
-      @apply text-left w-full;
+      @apply text-center w-full;
     }
   }
 }

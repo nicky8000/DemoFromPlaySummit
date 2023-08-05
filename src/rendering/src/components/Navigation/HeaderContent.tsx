@@ -75,12 +75,12 @@ const HeaderContent = (props: HeaderContentProps): JSX.Element => {
 
   return (
     <>
-      <div className={`header-eyebrow ${sxaStyles}`}>
+      {/* <div className={`header-eyebrow ${sxaStyles}`}>
         <div className="content">
           {languageSelector}
           {links}
         </div>
-      </div>
+      </div> */}
       <Placeholder name="jss-header-content" rendering={props.rendering} />
     </>
   );

@@ -4,7 +4,6 @@ import {
   RichText,
   Image,
   ImageField,
-  Placeholder,
   withDatasourceCheck,
 } from '@sitecore-jss/sitecore-jss-nextjs';
 import { ComponentProps } from 'lib/component-props';
@@ -44,16 +43,18 @@ const HeroSection = (props: HeroProps): JSX.Element => {
         <div className="hero-container">
           <div className="container-content">
             <div className="content-text">
-              {!props.fields.Icon && <Text field={props.fields.Slogan} tag="p" className="slogan" />}
+              {!props.fields.Icon && (
+                <Text field={props.fields.Slogan} tag="p" className="slogan" />
+              )}
               <Text field={props.fields.Eyebrow} tag="h1" className="expo" />
               <Text field={props.fields.Title} tag="h3" className="title" />
               <RichText field={props.fields.Body} tag="div" className="subtitle" />
-            {props.fields.Icon && 
-            <div className="content-image">
-              <Image field={props.fields.Icon} alt="" loading="lazy" className="icon" />
-              <Text field={props.fields.Slogan} tag="p" className="slogan" />
-            </div>
-            }
+              {props.fields.Icon && (
+                <div className="content-image">
+                  <Image field={props.fields.Icon} alt="" loading="lazy" className="icon" />
+                  <Text field={props.fields.Slogan} tag="p" className="slogan" />
+                </div>
+              )}
             </div>
             {/* <Placeholder name="jss-hero-section-content" rendering={props.rendering} /> */}
           </div>

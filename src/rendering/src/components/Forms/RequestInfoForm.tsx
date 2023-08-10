@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react';
-import Link from 'next/link';
+//import Link from 'next/link';
 import { identifyVisitor } from '../../services/IdentificationService';
 import { getUserData } from '../../helpers/GuestDataHelper';
 import { ComponentProps } from 'lib/component-props';
@@ -105,7 +105,7 @@ const RequestInfoForm = (props: ComponentProps): JSX.Element => {
           <label htmlFor="phoneNumber">Phone Number</label>
         </div>
       </div>
-      <label className="checkbox-label">
+      {/* <label className="checkbox-label">
         <input type="checkbox" />
         <span className="label-text">If you wish to receive updates on the expo</span>
       </label>
@@ -114,13 +114,13 @@ const RequestInfoForm = (props: ComponentProps): JSX.Element => {
         <span className="label-text">
           If you wish to receive updates from third party vendors and promotions
         </span>
-      </label>
+      </label> */}
       <div className="button-area">
         <button className="btn-main" type="submit">
           Submit
         </button>
       </div>
-      <div className="footnote">
+      {/* <div className="footnote">
         <p>
           Already have an account? <Link href="#">Log in.</Link>
         </p>
@@ -128,14 +128,14 @@ const RequestInfoForm = (props: ComponentProps): JSX.Element => {
           To find out more about how we are using this information you are giving up, please our{' '}
           <Link href="/privacy">privacy statement</Link>
         </p>
-      </div>
+      </div> */}
     </>
   );
 
   const thankYouMessage = (
     <>
-      Thank you for your request for information. A PLAY! Summit representative will contact you in
-      the near future.
+      Thank you for your request for information. A Darling Ingredients representative will contact
+      you in the near future.
     </>
   );
 

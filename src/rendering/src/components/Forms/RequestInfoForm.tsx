@@ -40,6 +40,8 @@ const RequestInfoForm = (props: ComponentProps): JSX.Element => {
 
   const form = (
     <>
+      <br />
+      <br />
       <div className="inline-fields">
         <div className="floating-label-wrap">
           <input

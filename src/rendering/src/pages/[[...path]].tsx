@@ -29,7 +29,8 @@ const SitecorePage = ({
 
   // DEMO TEAM CUSTOMIZATION - Sitecore Send integration
   useEffect(() => {
-    initializeSend(layoutData.sitecore.context.pageState);
+    //initializeSend(layoutData.sitecore.context.pageState);
+    initializeSend();
   }, [layoutData.sitecore.context.pageState]);
   // END CUSTOMIZATION
 

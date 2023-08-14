@@ -1,5 +1,14 @@
-const SitecoreSendForm = (): JSX.Element => {
-  return <div data-mooform-id="45563454-0c52-4688-81e3-328b985da92e"></div>;
+import { Field } from '@sitecore-jss/sitecore-jss-nextjs';
+import { ComponentProps } from 'lib/component-props';
+
+type SitecoreSendFormProps = ComponentProps & {
+  fields: {
+    FormId: Field<string>;
+  };
+};
+
+const SitecoreSendForm = (props: SitecoreSendFormProps): JSX.Element => {
+  return <div data-mooform-id={props.fields.FormId}></div>;
 };
 
 export const Default = SitecoreSendForm;

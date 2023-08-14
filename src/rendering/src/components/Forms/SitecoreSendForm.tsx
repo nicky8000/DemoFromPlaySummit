@@ -11,4 +11,4 @@ const SitecoreSendForm = (props: SitecoreSendFormProps): JSX.Element => {
   return <div data-mooform-id={props.fields.FormId}></div>;
 };
 
-export const Default = SitecoreSendForm;
+export default SitecoreSendForm;
